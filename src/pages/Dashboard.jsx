@@ -17,7 +17,7 @@ function Dashboard() {
             </div>
         </nav>
         <div>
-            <Card name={'Ajimon'} mob={1234567890} passId={123456} paySlip={'paySlip.jpg'} aadhar={'aadhar.jpg'} schoolId={'schoolId.jpg'} />
+            <Card image="https://pbs.twimg.com/profile_images/819627547877056514/1_E9oabg_400x400.jpg" name={'Ajimon'} mob={1234567890} passId={123456} paySlip="https://public.bnbstatic.com/image/cms/article/body/202302/d9f75be540977a5782c30a277ff180b1.jpeg" aadhar="https://www.medianama.com/wp-content/uploads/2023/03/aadhaar-card-7579588_1280.png" schoolId="https://t3.ftcdn.net/jpg/02/72/40/44/360_F_272404412_MD9Qnk52bpTk9BEhpq2ZofYupyF8UWbg.jpg" />
         </div>
     </div>
   )
