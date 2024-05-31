@@ -1,8 +1,13 @@
-import React from 'react'
+import Dashboard from "./pages/Dashboard"
+import UserLogin from "./pages/UserLogin"
+
 
 function App() {
   return (
-    <div>App</div>
+    <div>
+      {/* <UserLogin /> */}
+      <Dashboard />
+    </div>
   )
 }
 
