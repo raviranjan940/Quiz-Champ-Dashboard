@@ -271,7 +271,7 @@ const PopUp = ({ name, mobileNumber, passId, handlePopupClose }) => {
                         required
                         className="mt-2"
                         checked={ticked}
-                        onChange={() => setTicked(!ticked)}
+                        onChange={() => setTicked(prev => !prev)}
                     />{" "}
                     <label className="font-medium">
                         I have sent the WhatsApp message.
@@ -293,4 +293,5 @@ PopUp.propTypes = {
     name: PropTypes.string,
     mobileNumber: PropTypes.number,
     passId: PropTypes.number,
+    handlePopupClose: PropTypes.func,
 };
