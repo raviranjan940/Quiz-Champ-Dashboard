@@ -233,8 +233,7 @@ const PopUp = ({ name, mobileNumber, passId, handlePopupClose }) => {
 
     const [ticked, setTicked] = useState(false);
 
-    const handleClose = (e) => {
-        e.preventDefault();
+    const handleClose = () => {
         if (ticked) {
             handlePopupClose();
         } else {
