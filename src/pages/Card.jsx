@@ -72,7 +72,7 @@ const Card = ({
                         <label className="font-medium">Mobile: </label>
                         <span>{mobile}</span>
                     </div>
-                    <div className="flex gap-2 text-xs">
+                    <div className="flex gap-2 text-xs mb-2">
                         <a
                             href={`https://wa.me/91${mobile}?text=Hi%20${name}, we have found an issue with your submission for Quiz Champ 2024.`}
                             target="_blank"
