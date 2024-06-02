@@ -72,6 +72,25 @@ const Card = ({
                         <label className="font-medium">Mobile: </label>
                         <span>{mobile}</span>
                     </div>
+                    <div className="flex gap-2 text-xs">
+                        <a
+                            href={`https://wa.me/91${mobile}`}
+                            target="_blank"
+                            className="bg-green-400 text-white px-2 py-0.5 rounded-md"
+                        >
+                            WhatsApp
+                            <i className="fab fa-whatsapp ml-1"></i>
+                        </a>
+
+                        <a
+                            href={`tel:${mobile}`}
+                            target="_blank"
+                            className="bg-green-400 text-white px-2 py-0.5 rounded-md"
+                        >
+                            Call
+                            <i className="fas fa-phone-alt ml-1"></i>
+                        </a>
+                    </div>
                     {verified ? (
                         <span className="bg-green-400 text-white px-2 py-0.5 rounded-md">
                             Already Verified
@@ -270,7 +289,7 @@ const PopUp = ({ name, mobileNumber, passId, handlePopupClose }) => {
                         required
                         className="mt-2"
                         checked={ticked}
-                        onChange={() => setTicked(prev => !prev)}
+                        onChange={() => setTicked((prev) => !prev)}
                     />{" "}
                     <label className="font-medium">
                         I have sent the WhatsApp message.
