@@ -238,10 +238,7 @@ const PopUp = ({ name, mobileNumber, passId, handlePopupClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <form
-                className="bg-white p-4 rounded-lg"
-                onSubmit={handleSubmit}
-            >
+            <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg">
                 <h1 className="text-2xl font-semibold">Document Verified</h1>
                 <p className="text-gray-500">
                     The document has been verified successfully.
