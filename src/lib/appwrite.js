@@ -46,7 +46,10 @@ class AppwriteClient {
         try {
             const response = await this.databases.listDocuments(
                 import.meta.env.VITE_APPWRITE_DATABASE_ID,
-                import.meta.env.VITE_APPWRITE_COLLECTION_ID
+                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                [
+                    Query.limit(500),
+                ]
             );
             return response;
         } catch (error) {
