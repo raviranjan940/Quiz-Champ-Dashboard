@@ -74,7 +74,7 @@ const Card = ({
                     </div>
                     <div className="flex gap-2 text-xs">
                         <a
-                            href={`https://wa.me/91${mobile}`}
+                            href={`https://wa.me/91${mobile}?text=Hi%20${name}, we have found an issue with your submission for Quiz Champ 2024.`}
                             target="_blank"
                             className="bg-green-400 text-white px-2 py-0.5 rounded-md"
                         >
