@@ -51,8 +51,7 @@ const Card = ({
         }
     };
 
-    const handlePopupClose = (e) => {
-        e.preventDefault();
+    const handlePopupClose = () => {
         setOpenPopup(false);
     };
 
