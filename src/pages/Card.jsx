@@ -231,14 +231,20 @@ const PopUp = ({ name, mobileNumber, passId, handlePopupClose }) => {
     // WhatsApp link
     let whatsappLink = `https://wa.me/${mobileNumber}?text=${encodedMessage}`;
 
-    const handleSubmit = (e) => {
+    const [ticked, setTicked] = useState(false);
+
+    const handleClose = (e) => {
         e.preventDefault();
-        handlePopupClose(e);
+        if (ticked) {
+            handlePopupClose();
+        } else {
+            alert("Please send the WhatsApp message before closing.");
+        }
     };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg">
+            <div className="bg-white p-4 rounded-lg">
                 <h1 className="text-2xl font-semibold">Document Verified</h1>
                 <p className="text-gray-500">
                     The document has been verified successfully.
@@ -261,18 +267,25 @@ const PopUp = ({ name, mobileNumber, passId, handlePopupClose }) => {
                 </p>
 
                 <p className="text-gray-500">
-                    <input type="checkbox" required className="mt-2" />{" "}
+                    <input
+                        type="checkbox"
+                        required
+                        className="mt-2"
+                        checked={ticked}
+                        onChange={() => setTicked(!ticked)}
+                    />{" "}
                     <label className="font-medium">
                         I have sent the WhatsApp message.
                     </label>
                 </p>
                 <button
-                    type="submit"
+                    type="button"
+                    onClick={handleClose}
                     className="bg-green-400 text-white p-2 rounded-md w-full mt-1"
                 >
                     Close
                 </button>
-            </form>
+            </div>
         </div>
     );
 };
