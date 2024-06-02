@@ -10,11 +10,11 @@ import { Link } from "react-router-dom";
 const menuItems = [
     {
         name: "All Records",
-        href: "/",
+        href: "/documents",
     },
     {
         name: "Verify Records",
-        href: "/verify",
+        href: "/",
     },
     {
         name: "Support",
