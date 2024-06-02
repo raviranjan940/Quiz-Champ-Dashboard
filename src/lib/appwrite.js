@@ -1,10 +1,11 @@
 import { Client, Databases, Storage, ID, Query, Account } from "appwrite";
+import { useDispatch } from "react-redux";
 
 class AppwriteClient {
     constructor() {
         this.client = new Client()
-            .setEndpoint(import.meta.env.REACT_APP_APPWRITE_ENDPOINT) // Your API Endpoint
-            .setProject(import.meta.env.REACT_APP_APPWRITE_PROJECT_ID); // Your Project ID
+            .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT) // Your API Endpoint
+            .setProject(import.meta.env.VITE_APPWRITE_PROJECT_ID); // Your Project ID
 
         this.databases = new Databases(this.client);
         this.storage = new Storage(this.client);
@@ -13,10 +14,21 @@ class AppwriteClient {
 
     async login(email, password) {
         try {
-            return await this.account.createEmailPasswordSession(
+            const response = await this.account.createEmailPasswordSession(
                 email,
                 password
             );
+
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async currentSession() {
+        try {
+            const response = await this.account.get();
+            return response;
         } catch (error) {
             throw error;
         }
@@ -33,8 +45,8 @@ class AppwriteClient {
     async getDocuments() {
         try {
             const response = await this.databases.listDocuments(
-                import.meta.env.REACT_APP_APPWRITE_DATABASE_ID,
-                import.meta.env.REACT_APP_APPWRITE_COLLECTION_ID
+                import.meta.env.VITE_APPWRITE_DATABASE_ID,
+                import.meta.env.VITE_APPWRITE_COLLECTION_ID
             );
             return response;
         } catch (error) {
@@ -46,8 +58,8 @@ class AppwriteClient {
     async getDocument(documentId) {
         try {
             const response = await this.databases.getDocument(
-                import.meta.env.REACT_APP_APPWRITE_DATABASE_ID,
-                import.meta.env.REACT_APP_APPWRITE_COLLECTION_ID,
+                import.meta.env.VITE_APPWRITE_DATABASE_ID,
+                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
                 documentId
             );
             return response;
@@ -60,8 +72,8 @@ class AppwriteClient {
     async searchDocumnetbyMobile(mobileNumber) {
         try {
             const response = await this.databases.listDocuments(
-                import.meta.env.REACT_APP_APPWRITE_DATABASE_ID,
-                import.meta.env.REACT_APP_APPWRITE_COLLECTION_ID,
+                import.meta.env.VITE_APPWRITE_DATABASE_ID,
+                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
                 [Query.equal("mobile", mobileNumber)]
             );
             return response;
@@ -75,9 +87,25 @@ class AppwriteClient {
         console.log("imageId", imageId);
         try {
             const response = await this.storage.getFileView(
-                // import env variables from .env file vite
-                import.meta.env.REACT_APP_APPWRITE_STORAGE_BUCKET_ID,
+                import.meta.env.VITE_APPWRITE_STORAGE_BUCKET_ID,
                 imageId
+            );
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    async markVerified(documentId) {
+        try {
+            const response = await this.databases.updateDocument(
+                import.meta.env.VITE_APPWRITE_DATABASE_ID,
+                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                documentId,
+                {
+                    verified: true,
+                }
             );
             return response;
         } catch (error) {
