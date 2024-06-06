@@ -9,6 +9,7 @@ function Documents() {
     const [documents, setDocuments] = useState([]);
     const [verifiedDocuments, setVerifiedDocuments] = useState([]);
     const [unverifiedDocuments, setUnverifiedDocuments] = useState([]);
+    const [includePhoto, setIncludePhoto] = useState(false);
 
     useEffect(() => {
         document.title = "Documents";
@@ -68,7 +69,7 @@ function Documents() {
     return (
         <>
             <div className="overflow-hidden print:overflow-y-auto w-full max-w-7xl m-auto">
-                <div>
+                <div className="print:hidden">
                     <div className="flex justify-center">
                         <div className="p-5 m-5 bg-green-200 rounded-lg w-1/2">
                             <h1 className="text-3xl text-center font-semibold">
@@ -84,137 +85,110 @@ function Documents() {
                         </div>
                     </div>
                 </div>
+
                 {/* print btn */}
-                <div className="flex justify-center gap-3">
+                <div className="flex justify-center gap-3 print:hidden">
                     <button
-                        onClick={exportPDF}
+                        onClick={window.print}
                         className="bg-blue-500 text-white px-4 py-1 rounded-md"
                     >
                         <i className="fas fa-print mr-1"></i>
                         Print PDF
                     </button>
 
-                    <button
+                    {/* <button
                         onClick={exportToExcel}
                         className="bg-blue-500 text-white px-4 py-1 rounded-md"
                     >
                         <i className="fas fa-file-excel mr-1"></i>
                         Export to Excel
-                    </button>
+                    </button> */}
+                </div>
+                <div>
+                    <input
+                        type="checkbox"
+                        id="includePhoto"
+                        name="includePhoto"
+                        checked={includePhoto}
+                        onClick={() => setIncludePhoto(!includePhoto)}
+                    />
+                    <label className="text-center print:hidden">
+                        {" "}
+                        Include Photo & Signature Area
+                    </label>
                 </div>
 
                 <div className="overflow-x-auto ">
-                    <table
-                        className="w-full whitespace-nowrap m-4"
-                        id="recordsTable"
-                    >
-                        <thead>
-                            <tr>
-                                <th className="border border-gray-300">
-                                    Created At
-                                </th>
-                                <th className="border border-gray-300">
-                                    Pass ID
-                                </th>
-                                <th className="border border-gray-300">Name</th>
-                                <th className="border border-gray-300">
-                                    Email
-                                </th>
-                                <th className="border border-gray-300">
-                                    Mobile
-                                </th>
-                                <th className="border border-gray-300">
-                                    Class
-                                </th>
-                                <th className="border border-gray-300">
-                                    School Name
-                                </th>
-                                <th className="border border-gray-300">
-                                    Verified
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {verifiedDocuments.map((document) => (
-                                <tr
-                                    key={document.$id}
-                                    className={`${
-                                        document.verified
-                                            ? "bg-green-100"
-                                            : "bg-red-100"
-                                    }`}
-                                >
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {new Date(
-                                            document.$createdAt
-                                        ).toDateString()}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.$id}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.name}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.email}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.mobile}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.class}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.schoolName}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.verified
-                                            ? "Verified"
-                                            : "Unverified"}
-                                    </td>
-                                </tr>
-                            ))}
-                            {unverifiedDocuments.map((document) => (
-                                <tr
-                                    key={document.$id}
-                                    className={`${
-                                        document.verified
-                                            ? "bg-green-100"
-                                            : "bg-red-100"
-                                    }`}
-                                >
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {new Date(
-                                            document.$createdAt
-                                        ).toDateString()}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.$id}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.name}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.email}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.mobile}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.class}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.schoolName}
-                                    </td>
-                                    <td className="border px-3 py-1 border-gray-300">
-                                        {document.verified
-                                            ? "Verified"
-                                            : "Unverified"}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <p className="text-center font-semibold grid grid-cols-5 gap-2">
+                        <span>No. of Documents: {documents.length}</span>
+                        <span>
+                            No. of Verified Documents:{" "}
+                            {verifiedDocuments.length}
+                        </span>
+                        <span>
+                            No. of Unverified Documents:{" "}
+                            {unverifiedDocuments.length}
+                        </span>
+
+                        <span>
+                            No. of Hindi Mode Candidates :{" "}
+                            {verifiedDocuments.filter(
+                                (document) => document.mediumOfStudy === "Hindi"
+                            ).length}
+                        </span>
+                        <span>
+                            No. of English Mode Candidates :{" "}
+                            {verifiedDocuments.filter(
+                                (document) => document.mediumOfStudy === "English"
+                            ).length}
+                        </span>
+                    </p>
+
+                    <div id="records">
+                        <div>
+                            {/* forst mediumofstudy Hindi and then mediumofstudy English */}
+                            {verifiedDocuments
+                                .sort((a, b) =>
+                                    b.mediumOfStudy.localeCompare(
+                                        a.mediumOfStudy
+                                    )
+                                )
+                                .map((document) => {
+                                    if (!includePhoto) {
+                                        document.includePhoto = false;
+                                    } else {
+                                        document.includePhoto = true;
+                                    }
+
+                                    return (
+                                        <ListRecord
+                                            record={document}
+                                            key={document.$id}
+                                        />
+                                    );
+                                })}
+                        </div>
+
+                        <div className="flex justify-center">
+                            Unverified Documents
+                        </div>
+                        <div>
+                            {unverifiedDocuments.map((document) => {
+                                if (!includePhoto) {
+                                    document.includePhoto = false;
+                                } else {
+                                    document.includePhoto = true;
+                                }
+
+                                return (
+                                    <ListRecord
+                                        record={document}
+                                        key={document.$id}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
@@ -222,3 +196,93 @@ function Documents() {
 }
 
 export default Documents;
+
+const ListRecord = ({ record }) => {
+    const [photoUrl, setPhotoUrl] = useState("");
+
+    useEffect(() => {
+        if (record?.includePhoto && record?.photo) {
+            appwriteClient.getImageById(record?.photo).then((response) => {
+                setPhotoUrl(response);
+            });
+        }
+    }, [record]);
+
+    return (
+        <div className="flex gap-2 p-2 border-black border my-2 text-sm break-inside-avoid">
+            {record.includePhoto && record.photo && (
+                <img
+                    src={photoUrl}
+                    alt="photo"
+                    className="h-fit w-[7%] object-cover border-2 border-black my-auto"
+                />
+            )}
+
+            <div className="grid grid-cols-5 gap-2 w-full">
+                <p>
+                    <p className="font-semibold">Name: </p>
+                    {record.name}
+                </p>
+                <p>
+                    <p className="font-semibold">Father's Name: </p>
+                    {record.fathersName}
+                </p>
+                <p>
+                    <p className="font-semibold">Mother's Name: </p>
+                    {record.mothersName}
+                </p>
+                <p>
+                    <p className="font-semibold">School ID: </p>
+                    {record.schoolID}
+                </p>
+                <p>
+                    <p className="font-semibold">Class: </p>
+                    {record.class}
+                </p>
+                <p>
+                    <p className="font-semibold">School Name: </p>
+                    {record.schoolName}
+                </p>
+                <p>
+                    <p className="font-semibold">Medium of Study: </p>
+                    {record.mediumOfStudy}
+                </p>
+                <p>
+                    <p className="font-semibold">Mobile: </p>
+                    {record.mobile}
+                </p>
+                <p>
+                    <p className="font-semibold">Aadhar: </p>
+                    {record.aadhar}
+                </p>
+                <p>
+                    <p className="font-semibold">Email: </p>
+                    {record.email}
+                </p>
+                <p>
+                    <p className="font-semibold">Digital Verified: </p>
+                    {record.verified ? "Yes" : "No"}
+                </p>
+            </div>
+            {record.includePhoto && (
+                <div className="w-[12%] flex flex-col justify-end items-center border">
+                    <p className="font-medium text-center text-xs">
+                        Signature with date
+                    </p>
+                </div>
+            )}
+            {/* <td className="border p-2">{record.$id}</td>
+            <td className="border p-2">{record.name}</td>
+            <td className="border p-2">{record.fathersName}</td>
+            <td className="border p-2">{record.mothersName}</td>
+            <td className="border p-2">{record.schoolID}</td>
+            <td className="border p-2">{record.class}</td>
+            <td className="border p-2">{record.schoolName}</td>
+            <td className="border p-2">{record.mediumOfStudy}</td>
+            <td className="border p-2">{record.mobile}</td>
+            <td className="border p-2">{record.aadhar}</td>
+            <td className="border p-2">{record.email}</td>
+            <td className="border p-2">{record.verified ? "Yes" : "No"}</td> */}
+        </div>
+    );
+};
