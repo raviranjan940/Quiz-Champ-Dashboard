@@ -94,8 +94,12 @@ const PrstAbstData = () => {
                                 <tr
                                     key={student.$id}
                                     className={
-                                        student.present
+                                        student.present && student.verified
                                             ? "bg-green-100"
+                                            : student.present && !student.verified
+                                            ? "bg-yellow-100"
+                                            : !student.present && !student.verified
+                                            ? "bg-blue-100"
                                             : "bg-red-100"
                                     }
                                 >
