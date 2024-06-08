@@ -272,7 +272,7 @@ const ListRecord = ({ record }) => {
                 </p>
             </div>
             {record.includePhoto && (
-                <div className="w-[12%] flex flex-col justify-end items-center border">
+                <div className="w-[15%] flex flex-col justify-end items-center border">
                     <p className="font-medium text-center text-xs">
                         Signature with date
                     </p>
