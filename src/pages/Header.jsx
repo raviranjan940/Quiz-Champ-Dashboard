@@ -20,6 +20,10 @@ const menuItems = [
         name: "Support",
         href: "https://wa.me/918210228101?text=Hello%20Satyalok%20I%20need%20help%20with%20Quiz%20App%20Admin%20Panel",
     },
+    {
+        name: "Attendance",
+        href: "/attendance"
+    }
 ];
 
 function Header() {

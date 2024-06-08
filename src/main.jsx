@@ -12,6 +12,7 @@ import UnauthenticatedRoute from "./UnauthenticatedRoute.jsx";
 import Layout from "./Layout.jsx";
 import Documents from "./pages/Documents.jsx";
 import QRCodeScanner from "./pages/Scanner.jsx";
+import PrstAbstData from "./pages/PrstAbstData.jsx";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
                 path: "/documents",
                 element: <Documents />,
             },
+            {
+                path: "/attendance",
+                element: <PrstAbstData />,
+            }
         ],
     },
 ]);
