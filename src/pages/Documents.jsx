@@ -252,10 +252,10 @@ const ListRecord = ({ record }) => {
                     <p className="font-semibold">Aadhar: </p>
                     {record.aadhar}
                 </p>
-                <p>
+                {/* <p>
                     <p className="font-semibold">Email: </p>
                     {record.email}
-                </p>
+                </p> */}
                 <p>
                     <p className="font-semibold">Digital Verified: </p>
                     {record.verified ? "Yes" : "No"}
