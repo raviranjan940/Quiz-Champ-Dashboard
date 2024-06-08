@@ -214,13 +214,6 @@ const ListRecord = ({ record }) => {
 
     return (
         <div className="flex gap-2 p-2 border-black border my-2 text-sm break-inside-avoid">
-            {record.includePhoto && record.photo && (
-                <img
-                    src={photoUrl}
-                    alt="photo"
-                    className="h-fit w-[7%] object-cover border-2 border-black my-auto"
-                />
-            )}
 
             <div className="grid grid-cols-5 gap-2 w-full">
                 <p>
@@ -259,17 +252,27 @@ const ListRecord = ({ record }) => {
                     <p className="font-semibold">Aadhar: </p>
                     {record.aadhar}
                 </p>
-                <p>
+                {/* <p>
                     <p className="font-semibold">Email: </p>
                     {record.email}
-                </p>
+                </p> */}
                 <p>
                     <p className="font-semibold">Digital Verified: </p>
                     {record.verified ? "Yes" : "No"}
                 </p>
+                <p>
+                    <p className="font-semibold">Pass Id: </p>
+                    {record.$id}
+                </p>
+                <p>
+                    <p className="font-semibold">OMR No.: </p>
+                </p>
+                <p>
+                    <p className="font-semibold">Verified By: </p>
+                </p>
             </div>
             {record.includePhoto && (
-                <div className="w-[12%] flex flex-col justify-end items-center border">
+                <div className="w-[15%] flex flex-col justify-end items-center border">
                     <p className="font-medium text-center text-xs">
                         Signature with date
                     </p>
