@@ -100,6 +100,21 @@ class AppwriteClient {
         }
     }
 
+    async getImagePreview(imageId) {
+        try {
+            const response = await this.storage.getFilePreview(
+                import.meta.env.VITE_APPWRITE_STORAGE_BUCKET_ID,
+                imageId,
+                150,
+                0
+            );
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
     async markVerified(documentId) {
         try {
             const response = await this.databases.updateDocument(

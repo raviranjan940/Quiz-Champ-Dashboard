@@ -109,7 +109,7 @@ function StudentCard({ data }) {
     useEffect(() => {
         if (data?.photo) {
             appwriteClient
-                .getImageById(data.photo)
+                .getImagePreview(data.photo)
                 .then((response) => {
                     setPhotoUrl(response.href);
                 })
@@ -141,7 +141,7 @@ function StudentCard({ data }) {
             })
             .catch((error) => {
                 console.error(error);
-                setConfirmation("Failed to mark absent");
+                setConfirmation("ERROR: Failed to mark absent");
             });
     };
 
@@ -155,7 +155,7 @@ function StudentCard({ data }) {
                     <img
                         src={photoUrl}
                         alt="Student"
-                        className="rounded-full w-32 h-32 object-cover m-auto"
+                        className=" w-32 h-32 object-cover m-auto rotate-90 object-center"
                     />
                 )}
                 {data.present ? (
@@ -195,7 +195,7 @@ function StudentCard({ data }) {
             </div>
 
             {confirmation && (
-                <p className="mt-4 text-lg text-green-500">{confirmation}</p>
+                <p className="mt-4 text-lg text-blue-500">{confirmation}</p>
             )}
         </div>
     );
