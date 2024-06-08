@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import { appwriteClient } from "../lib/appwrite";
 
+// Utility function to convert UTC time to IST and extract time part
+const convertToIST = (utcTime) => {
+    const date = new Date(utcTime);
+    // Calculate IST offset (UTC+5:30)
+    const istOffset = 330 * 60 * 1000; // 330 minutes in milliseconds
+    const istTime = new Date(date.getTime() + istOffset);
+    // Extract and format time as HH:mm:ss
+    return istTime.toISOString().split("T")[1].split(".")[0]; // Split to get time part only
+};
+
 const PrstAbstData = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -13,10 +23,13 @@ const PrstAbstData = () => {
         try {
             const response = await appwriteClient.getDocuments();
             const studentsData = response.documents;
+            console.log(studentsData);
             setStudents(studentsData);
 
             // Calculate the counts for present and absent students
-            const present = studentsData.filter(student => student.present).length;
+            const present = studentsData.filter(
+                (student) => student.present
+            ).length;
             const absent = studentsData.length - present;
 
             setPresentCount(present);
@@ -55,35 +68,67 @@ const PrstAbstData = () => {
                     <thead>
                         <tr>
                             <th className="py-2 px-4 border-b">Attendance</th>
+                            <th className="py-2 px-4 border-b">Updated At</th>
                             <th className="py-2 px-4 border-b">Name</th>
-                            <th className="py-2 px-4 border-b">Father's Name</th>
-                            <th className="py-2 px-4 border-b">Mother's Name</th>
+                            <th className="py-2 px-4 border-b">
+                                Father's Name
+                            </th>
+                            <th className="py-2 px-4 border-b">
+                                Mother's Name
+                            </th>
                             <th className="py-2 px-4 border-b">Class</th>
                             <th className="py-2 px-4 border-b">School Name</th>
-                            <th className="py-2 px-4 border-b">Medium of Study</th>
+                            <th className="py-2 px-4 border-b">
+                                Medium of Study
+                            </th>
                             <th className="py-2 px-4 border-b">Mobile</th>
                             <th className="py-2 px-4 border-b">Email</th>
                         </tr>
                     </thead>
                     <tbody>
                         {students
-                            .sort((a, b) => (a.present === b.present ? 0 : a.present ? -1 : 1))
+                            .sort((a, b) =>
+                                a.present === b.present ? 0 : a.present ? -1 : 1
+                            )
                             .map((student) => (
                                 <tr
                                     key={student.$id}
-                                    className={student.present ? "bg-green-100" : "bg-red-100"}
+                                    className={
+                                        student.present
+                                            ? "bg-green-100"
+                                            : "bg-red-100"
+                                    }
                                 >
                                     <td className="py-2 px-4 border-b">
                                         {student.present ? "Present" : "Absent"}
                                     </td>
-                                    <td className="py-2 px-4 border-b">{student.name}</td>
-                                    <td className="py-2 px-4 border-b">{student.fathersName}</td>
-                                    <td className="py-2 px-4 border-b">{student.mothersName}</td>
-                                    <td className="py-2 px-4 border-b">{student.class}</td>
-                                    <td className="py-2 px-4 border-b">{student.schoolName}</td>
-                                    <td className="py-2 px-4 border-b">{student.mediumOfStudy}</td>
-                                    <td className="py-2 px-4 border-b">{student.mobile}</td>
-                                    <td className="py-2 px-4 border-b">{student.email}</td>
+                                    <td className="py-2 px-4 border-b">
+                                        {convertToIST(student.$updatedAt)}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.name}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.fathersName}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.mothersName}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.class}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.schoolName}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.mediumOfStudy}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.mobile}
+                                    </td>
+                                    <td className="py-2 px-4 border-b">
+                                        {student.email}
+                                    </td>
                                 </tr>
                             ))}
                     </tbody>
