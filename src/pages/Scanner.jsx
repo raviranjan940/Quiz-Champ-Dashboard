@@ -7,10 +7,10 @@ const QRCodeScanner = () => {
     const [extractedText, setExtractedText] = useState("");
     const [document, setDocument] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [scannerKey, setScannerKey] = useState(Date.now()); // Key to force re-render
+    const [scannerKey, setScannerKey] = useState(Date.now());
 
     const handleScan = (data) => {
-        if (data) {
+        if (data && data.text) {
             console.log(data);
             setQrData(data);
             // Extract the text between square brackets
@@ -52,48 +52,50 @@ const QRCodeScanner = () => {
 
     return (
         <div className="flex flex-col items-center">
-            {qrData ? (
-                <div className="w-full p-4 rounded-lg text-center">
-                    Please verify the extracted text before proceeding
-                </div>
-            ) : (
-                <QrScanner
-                    key={scannerKey} // Use key prop to force re-render
-                    delay={300}
-                    onScan={handleScan}
-                    onError={handleError}
-                    style={previewStyle}
-                    constraints={{
-                        audio: false,
-                        video: { facingMode: "environment" },
-                    }}
-                />
-            )}
-
-            <p className="mt-4 text-lg">
-                ID: <span className="font-medium">{extractedText}</span>
-            </p>
-
             {loading ? (
                 <div className="flex flex-col items-center mt-4">
                     <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-b-4 border-red-500"></div>
                     <p className="mt-2 text-lg">Loading document...</p>
                 </div>
             ) : (
-                <StudentCard data={document} />
-            )}
+                <>
+                    {!qrData ? (
+                        <QrScanner
+                            key={scannerKey}
+                            delay={300}
+                            onScan={handleScan}
+                            onError={handleError}
+                            style={previewStyle}
+                            constraints={{
+                                audio: false,
+                                video: { facingMode: "environment" },
+                            }}
+                        />
+                    ) : (
+                        <div className="w-full p-4 rounded-lg text-center">
+                            <p className="text-lg">
+                                ID:{" "}
+                                <span className="font-medium">
+                                    {extractedText}
+                                </span>
+                            </p>
+                            <StudentCard data={document} />
+                        </div>
+                    )}
 
-            <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-                onClick={() => {
-                    setDocument(null);
-                    setQrData(null);
-                    setExtractedText("");
-                    setScannerKey(Date.now()); // Update key to reset scanner
-                }}
-            >
-                Clear and Retake
-            </button>
+                    <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+                        onClick={() => {
+                            setDocument(null);
+                            setQrData(null);
+                            setExtractedText("");
+                            setScannerKey(Date.now());
+                        }}
+                    >
+                        Clear and Retake
+                    </button>
+                </>
+            )}
         </div>
     );
 };
@@ -102,8 +104,10 @@ export default QRCodeScanner;
 
 function StudentCard({ data }) {
     const [photoUrl, setPhotoUrl] = useState(null);
+    const [confirmation, setConfirmation] = useState("");
+
     useEffect(() => {
-        data.photo &&
+        if (data?.photo) {
             appwriteClient
                 .getImageById(data.photo)
                 .then((response) => {
@@ -112,18 +116,57 @@ function StudentCard({ data }) {
                 .catch((error) => {
                     console.error(error);
                 });
-    }, [data.photo]);
+        }
+    }, [data?.photo]);
+
+    const markPresent = () => {
+        appwriteClient
+            .markPresent(data?.$id)
+            .then((response) => {
+                console.log(response);
+                setConfirmation("Marked present successfully");
+            })
+            .catch((error) => {
+                console.error(error);
+                setConfirmation("Failed to mark present");
+            });
+    };
+
+    const markAbsent = () => {
+        appwriteClient
+            .markAbsent(data?.$id)
+            .then((response) => {
+                console.log(response);
+                setConfirmation("Marked absent successfully");
+            })
+            .catch((error) => {
+                console.error(error);
+                setConfirmation("Failed to mark absent");
+            });
+    };
+
+    if (!data) return null; // Render nothing if no data
 
     return (
         <div className="flex flex-col items-center w-full">
             <h1 className="text-2xl mb-4">Student Card</h1>
             <div className="w-full p-4 rounded-lg text-center">
-                <img
-                    src={photoUrl}
-                    alt="Student"
-                    className="rounded-full w-32 h-32 object-cover m-auto"
-                />
-                <p className="text-lg mt-4 font-medium">Name</p>
+                {photoUrl && (
+                    <img
+                        src={photoUrl}
+                        alt="Student"
+                        className="rounded-full w-32 h-32 object-cover m-auto"
+                    />
+                )}
+                {data.present ? (
+                    <p className="text-lg text-green-500">Already marked Present</p>
+                ) : data.present === false ? (
+                    <p className="text-lg text-red-500">Absent</p>
+                ) : (
+                    <p className="text-lg">Not Marked</p>
+                )}
+
+                <p className="text-lg mt-2 font-medium">Name</p>
                 <p className="text-lg">{data.name}</p>
                 <p className="text-lg mt-2 font-medium">
                     Medium of Examination
@@ -138,36 +181,22 @@ function StudentCard({ data }) {
             <div className="flex justify-center mt-4">
                 <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => {
-                        appwriteClient
-                            .markPresent(data.$id)
-                            .then((response) => {
-                                console.log(response);
-                            })
-                            .catch((error) => {
-                                console.error(error);
-                            });
-                    }}
+                    onClick={() => markPresent()}
                 >
                     Mark Present
                 </button>
 
                 <button
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
-                    onClick={() => {
-                        appwriteClient
-                            .markAbsent(data.$id)
-                            .then((response) => {
-                                console.log(response);
-                            })
-                            .catch((error) => {
-                                console.error(error);
-                            });
-                    }}
+                    onClick={() => markAbsent()}
                 >
                     Mark Absent
                 </button>
             </div>
+
+            {confirmation && (
+                <p className="mt-4 text-lg text-green-500">{confirmation}</p>
+            )}
         </div>
     );
 }
