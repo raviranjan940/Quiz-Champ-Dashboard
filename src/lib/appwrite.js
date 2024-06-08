@@ -116,6 +116,40 @@ class AppwriteClient {
             throw error;
         }
     }
+
+    async markPresent(documentId) {
+        try {
+            const response = await this.databases.updateDocument(
+                import.meta.env.VITE_APPWRITE_DATABASE_ID,
+                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                documentId,
+                {
+                    present: true,
+                }
+            );
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    async markAbsent(documentId) {
+        try {
+            const response = await this.databases.updateDocument(
+                import.meta.env.VITE_APPWRITE_DATABASE_ID,
+                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                documentId,
+                {
+                    present: false,
+                }
+            );
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }
 
 const appwriteClient = new AppwriteClient();

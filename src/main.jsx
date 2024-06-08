@@ -11,6 +11,7 @@ import VerifyPass from "./pages/VerifyPass.jsx";
 import UnauthenticatedRoute from "./UnauthenticatedRoute.jsx";
 import Layout from "./Layout.jsx";
 import Documents from "./pages/Documents.jsx";
+import QRCodeScanner from "./pages/Scanner.jsx";
 
 const router = createBrowserRouter([
     {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <VerifyPass />,
+                element: <QRCodeScanner />,
             },
             {
                 path: "/documents",
